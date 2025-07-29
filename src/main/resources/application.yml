@@ -1,0 +1,48 @@
+#file: noinspection undefined
+spring:
+  application:
+    name: e-Saksham
+  profiles:
+    active: ${ACTIVE_PROFILE:staging}
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}
+    username: ${POSTGRESQL_USERNAME}
+    password: ${POSTGRESQL_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-test-query: SELECT 1
+
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: ${POSTGRESQL_DATABASE}
+
+server:
+  port: ${SERVER_PORT:8081}
+  error:
+    whitelabel:
+      enabled: false
+
+keys:
+  algorithm: ${KEY_ALGORITHM}
+  id: ${KEY_ID}
+  private: ${PRIVATE_KEY}
+  public: ${PUBLIC_KEY}
+
+logging:
+  level:
+    org.springframework.web: INFO
+    org.springframework.security: TRACE
+    org.springframework.security.oauth2: TRACE
+

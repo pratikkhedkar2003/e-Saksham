@@ -1,0 +1,20 @@
+#file: noinspection undefined
+
+# profile
+ACTIVE_PROFILE: staging
+
+# server
+SERVER_PORT: 8081
+
+# datasource
+POSTGRESQL_HOST: localhost
+POSTGRESQL_PORT: 5433
+POSTGRESQL_DATABASE: auth_test_db
+POSTGRESQL_USERNAME: postgres
+POSTGRESQL_PASSWORD: root
+
+# keys
+KEY_ALGORITHM: RSA
+KEY_ID: 584b349d-38e8-4a09-b401-635a36b947b1
+PRIVATE_KEY: "private.key"
+PUBLIC_KEY: "public.key"
