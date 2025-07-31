@@ -6,6 +6,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import java.time.Duration;
 import java.util.UUID;
 
+@EnableJpaAuditing
 @SpringBootApplication
 public class ESakshamApplication {
 	private static final Logger log = LoggerFactory.getLogger(ESakshamApplication.class);

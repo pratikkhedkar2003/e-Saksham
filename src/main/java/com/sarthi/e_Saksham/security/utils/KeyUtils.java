@@ -46,7 +46,7 @@ public class KeyUtils {
 
     private RSAKey getOrGenerateRSAKeyPair(String privateKeyName, String publicKeyName) {
         log.info("Inside getOrGenerateRSAKeyPair {}, {}", privateKeyName, publicKeyName);
-        KeyPair keyPair;
+
         Path keysDirectory = Paths.get("src", "main", "resources", "keys");
         verifyKeysDirectory(keysDirectory);
 
@@ -83,7 +83,7 @@ public class KeyUtils {
             try {
                 KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(keyAlgorithm);
                 keyPairGenerator.initialize(2048);
-                keyPair = keyPairGenerator.generateKeyPair();
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
 
                 RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
