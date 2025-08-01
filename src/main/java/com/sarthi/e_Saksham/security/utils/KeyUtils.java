@@ -45,19 +45,19 @@ public class KeyUtils {
     }
 
     private RSAKey getOrGenerateRSAKeyPair(String privateKeyName, String publicKeyName) {
-        log.info("Inside getOrGenerateRSAKeyPair {}, {}", privateKeyName, publicKeyName);
+        log.info("Inside getOrGenerateRSAKeyPair Method {}, {}", privateKeyName, publicKeyName);
 
         Path keysDirectory = Paths.get("src", "main", "resources", "keys");
         verifyKeysDirectory(keysDirectory);
 
         if (Files.exists(keysDirectory.resolve(privateKeyName)) && Files.exists(keysDirectory.resolve(publicKeyName))) {
-            log.info("Inside getOrGenerateRSAKeyPair, RSA keys already exists. Loading keys from file paths: {}, {}", privateKeyName, publicKeyName);
+            log.info("Inside getOrGenerateRSAKeyPair Method, RSA keys already exists. Loading keys from file paths: {}, {}", privateKeyName, publicKeyName);
 
             try {
                 File privateKeyFile = keysDirectory.resolve(privateKeyName).toFile();
                 File publicKeyFile = keysDirectory.resolve(publicKeyName).toFile();
 
-                log.info("Inside getOrGenerateRSAKeyPair, Creating RSA Key pair from key files with KeyID: {}, KeyAlgorithm {}", keyId, keyAlgorithm);
+                log.info("Inside getOrGenerateRSAKeyPair Method, Creating RSA Key pair from key files with KeyID: {}, KeyAlgorithm {}", keyId, keyAlgorithm);
 
                 KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
 
@@ -71,14 +71,14 @@ public class KeyUtils {
 
                 return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(keyId).build();
             } catch (Exception exception) {
-                log.error("Exception while reading Key Files and Generating RSA Key Pair, {}", exception.getMessage());
+                log.error("Inside getOrGenerateRSAKeyPair Method, Exception while reading Key Files and Generating RSA Key Pair, {}", exception.getMessage());
                 throw new ESakshamApiException(exception.getMessage());
             }
         } else {
             if (activeProfile.equalsIgnoreCase("prod")) {
                 throw new ESakshamApiException("Public and Private key don't exist in prod environment");
             }
-            log.info("Inside getOrGenerateRSAKeyPair, Generating RSA private key and public keys: {}, {}", privateKeyName, publicKeyName);
+            log.info("Inside getOrGenerateRSAKeyPair Method, Generating RSA private key and public keys: {}, {}", privateKeyName, publicKeyName);
 
             try {
                 KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(keyAlgorithm);
@@ -97,11 +97,11 @@ public class KeyUtils {
                     X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey.getEncoded());
                     fos.write(keySpec.getEncoded());
                 }
-                log.info("Inside getOrGenerateRSAKeyPair, Successfully created private key and public key Files : {}, {}", privateKeyName, publicKeyName);
+                log.info("Inside getOrGenerateRSAKeyPair Method, Successfully created private key and public key Files : {}, {}", privateKeyName, publicKeyName);
 
                 return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(keyId).build();
             } catch (Exception exception) {
-                log.error("Exception while Generating key Files and creating RSA Key Pair: {}", exception.getMessage());
+                log.error("Inside getOrGenerateRSAKeyPair Method, Exception while Generating key Files and creating RSA Key Pair: {}", exception.getMessage());
                 throw new ESakshamApiException(exception.getMessage());
             }
         }
@@ -110,14 +110,14 @@ public class KeyUtils {
 
     private void verifyKeysDirectory(Path keysDirectory) {
         if (!Files.exists(keysDirectory)) {
-            log.info("Inside verifyKeysDirectory, creating Keys Directory");
+            log.info("Inside verifyKeysDirectory Method, creating Keys Directory");
             try {
                 Files.createDirectories(keysDirectory);
             } catch (Exception exception) {
-                log.error("Exception while creating Keys Directory, {}", exception.getMessage());
+                log.error("Inside verifyKeysDirectory Method, Exception while creating Keys Directory, {}", exception.getMessage());
                 throw new ESakshamApiException(exception.getMessage());
             }
-            log.info("Keys directory created: {}", keysDirectory);
+            log.info("Inside verifyKeysDirectory Method, Keys directory created: {}", keysDirectory);
         }
     }
 

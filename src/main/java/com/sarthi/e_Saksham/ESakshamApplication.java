@@ -48,7 +48,7 @@ public class ESakshamApplication {
 								authorizationScopes.add(OidcScopes.PHONE);
 								authorizationScopes.add(OidcScopes.ADDRESS);
 							})
-							.redirectUri("http://localhost:8081/")
+							.redirectUri("http://localhost:8081/auth-success")
 							.postLogoutRedirectUri("http://localhost:8081/")
 							.clientSettings(ClientSettings.builder()
 									.requireAuthorizationConsent(false)

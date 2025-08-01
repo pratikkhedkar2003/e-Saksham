@@ -27,15 +27,19 @@ public class RoleMstEntity extends Auditable {
     @Column(name = "client_id", nullable = false, length = 100)
     private String clientId;
 
+    @Column(name = "is_default")
+    private boolean defaultRole;
+
     public RoleMstEntity() {
         super();
     }
 
-    public RoleMstEntity(Long roleId, String roleName, String authorities, String clientId) {
+    public RoleMstEntity(Long roleId, String roleName, String authorities, String clientId, boolean defaultRole) {
         this.roleId = roleId;
         this.roleName = roleName;
         this.authorities = authorities;
         this.clientId = clientId;
+        this.defaultRole = defaultRole;
     }
 
     public Long getRoleId() {
@@ -70,6 +74,14 @@ public class RoleMstEntity extends Auditable {
         this.clientId = clientId;
     }
 
+    public boolean isDefaultRole() {
+        return defaultRole;
+    }
+
+    public void setDefaultRole(boolean defaultRole) {
+        this.defaultRole = defaultRole;
+    }
+
     @Override
     public String toString() {
         return "RoleMstEntity{" +
@@ -77,6 +89,7 @@ public class RoleMstEntity extends Auditable {
                 ", roleName='" + roleName + '\'' +
                 ", authorities='" + authorities + '\'' +
                 ", clientId='" + clientId + '\'' +
+                ", defaultRole='" + defaultRole + '\'' +
                 '}';
     }
 }
