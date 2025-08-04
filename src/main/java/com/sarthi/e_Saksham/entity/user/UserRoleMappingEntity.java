@@ -1,6 +1,7 @@
 package com.sarthi.e_Saksham.entity.user;
 
 import com.sarthi.e_Saksham.entity.Auditable;
+import com.sarthi.e_Saksham.utils.ESakshamAuthorizationServerVersion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "esaksham_user_role_mappings")
-public class UserRoleMappingEntity extends Auditable {
+public class UserRoleMappingEntity extends Auditable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = ESakshamAuthorizationServerVersion.SERIAL_VERSION_UID;
+
     @Id
     @Column(name = "user_role_mapping_id", nullable = false, unique = true, updatable = false)
     @SequenceGenerator(name = "esaksham_user_role_mappings_user_role_mapping_id_seq_gen", sequenceName = "esaksham_user_role_mappings_user_role_mapping_id_seq", allocationSize = 1)

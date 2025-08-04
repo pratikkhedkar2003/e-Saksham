@@ -2,6 +2,7 @@ package com.sarthi.e_Saksham.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sarthi.e_Saksham.entity.Auditable;
+import com.sarthi.e_Saksham.utils.ESakshamAuthorizationServerVersion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,12 +11,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "esaksham_users_mst")
-public class UserMstEntity extends Auditable {
+public class UserMstEntity extends Auditable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = ESakshamAuthorizationServerVersion.SERIAL_VERSION_UID;
+
     @Id
     @Column(name = "user_id", nullable = false, unique = true, updatable = false)
     @SequenceGenerator(name = "esaksham_users_mst_user_id_seq_gen", sequenceName = "esaksham_users_mst_user_id_seq", allocationSize = 1)

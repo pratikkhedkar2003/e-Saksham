@@ -3,6 +3,7 @@ package com.sarthi.e_Saksham.security.config;
 import com.sarthi.e_Saksham.security.constant.ESakshamAuthConstant;
 import com.sarthi.e_Saksham.security.generator.ESakshamJwtGenerator;
 import com.sarthi.e_Saksham.security.utils.ESakshamAuthUtils;
+import com.sarthi.e_Saksham.service.client.ESakshamRegisteredClientService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -29,8 +30,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 import static java.util.Arrays.asList;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS;
@@ -51,9 +50,11 @@ import static org.springframework.http.HttpMethod.PUT;
 @EnableWebSecurity
 public class AuthorizationServerConfig {
     private final JwtConfiguration jwtConfiguration;
+    private final ESakshamRegisteredClientService eSakshamRegisteredClientService;
 
-    public AuthorizationServerConfig(JwtConfiguration jwtConfiguration) {
+    public AuthorizationServerConfig(JwtConfiguration jwtConfiguration, ESakshamRegisteredClientService eSakshamRegisteredClientService) {
         this.jwtConfiguration = jwtConfiguration;
+        this.eSakshamRegisteredClientService = eSakshamRegisteredClientService;
     }
 
     @Bean
@@ -86,7 +87,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator() {
-        ESakshamJwtGenerator eSakshamJwtGenerator = ESakshamJwtGenerator.init(new NimbusJwtEncoder(jwtConfiguration.jwkSource()));
+        ESakshamJwtGenerator eSakshamJwtGenerator = ESakshamJwtGenerator.init(new NimbusJwtEncoder(this.jwtConfiguration.jwkSource()));
         eSakshamJwtGenerator.setJwtCustomizer(tokenCustomizer());
         return new DelegatingOAuth2TokenGenerator(eSakshamJwtGenerator);
     }
@@ -118,7 +119,7 @@ public class AuthorizationServerConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("https://authorize.com", "http://localhost:4200", "http://localhost:3000", "http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(this.eSakshamRegisteredClientService.getAllClientDomainNames());
         corsConfiguration.setAllowedHeaders(asList(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, "X_REQUESTED_WITH", ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS, "File-Name"));
         corsConfiguration.setExposedHeaders(asList(ORIGIN, ACCESS_CONTROL_ALLOW_ORIGIN, CONTENT_TYPE, ACCEPT, AUTHORIZATION, "X_REQUESTED_WITH", ACCESS_CONTROL_REQUEST_METHOD, ACCESS_CONTROL_REQUEST_HEADERS, ACCESS_CONTROL_ALLOW_CREDENTIALS, "File-Name"));
         corsConfiguration.setAllowedMethods(asList(GET.name(), POST.name(), PUT.name(), PATCH.name(), DELETE.name(), OPTIONS.name()));

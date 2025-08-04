@@ -1,6 +1,7 @@
 package com.sarthi.e_Saksham.entity.masters.district;
 
 import com.sarthi.e_Saksham.entity.Auditable;
+import com.sarthi.e_Saksham.utils.ESakshamAuthorizationServerVersion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,9 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "esaksham_districts_mst")
-public class DistrictMstEntity extends Auditable {
+public class DistrictMstEntity extends Auditable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = ESakshamAuthorizationServerVersion.SERIAL_VERSION_UID;
+
     @Id
     @Column(name = "district_id", nullable = false, unique = true, updatable = false)
     @SequenceGenerator(name = "esaksham_districts_mst_district_id_seq_gen", sequenceName = "esaksham_districts_mst_district_id_seq", allocationSize = 1)

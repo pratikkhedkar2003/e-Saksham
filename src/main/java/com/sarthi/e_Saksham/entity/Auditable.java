@@ -3,6 +3,7 @@ package com.sarthi.e_Saksham.entity;
 import com.sarthi.e_Saksham.domain.LoggedInUser;
 import com.sarthi.e_Saksham.domain.RequestContext;
 import com.sarthi.e_Saksham.exception.ESakshamApiException;
+import com.sarthi.e_Saksham.utils.ESakshamAuthorizationServerVersion;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -13,12 +14,18 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Auditable {
+public abstract class Auditable implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = ESakshamAuthorizationServerVersion.SERIAL_VERSION_UID;
+
     @NotNull
     @Column(name = "created_by", nullable = false)
     private Long createdBy;
