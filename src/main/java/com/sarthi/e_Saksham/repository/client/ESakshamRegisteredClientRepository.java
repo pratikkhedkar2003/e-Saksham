@@ -1,9 +1,16 @@
 package com.sarthi.e_Saksham.repository.client;
 
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import com.sarthi.e_Saksham.model.client.ESakshamRegisteredClient;
 
 import java.util.List;
 
-public interface ESakshamRegisteredClientRepository extends RegisteredClientRepository {
+public interface ESakshamRegisteredClientRepository {
+
+    void save(ESakshamRegisteredClient registeredClient);
+
+    ESakshamRegisteredClient findById(String id);
+
+    ESakshamRegisteredClient findByClientId(String clientId);
+
     List<String> getAllClientDomainNames();
 }

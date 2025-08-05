@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable implements Serializable {

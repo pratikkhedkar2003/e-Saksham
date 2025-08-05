@@ -15,13 +15,12 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class ESakshamRegisteredClient implements Serializable {
 
     @Serial
@@ -53,7 +52,18 @@ public class ESakshamRegisteredClient implements Serializable {
 
     private TokenSettings tokenSettings;
 
+    private Set<String> clientDomainNames;
+
+    private Long createdBy;
+
+    private Long updatedBy;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
+
     protected ESakshamRegisteredClient() {
+        super();
     }
 
     public String getId() {
@@ -83,7 +93,6 @@ public class ESakshamRegisteredClient implements Serializable {
         return this.clientName;
     }
 
-
     public Set<ClientAuthenticationMethod> getClientAuthenticationMethods() {
         return this.clientAuthenticationMethods;
     }
@@ -112,6 +121,98 @@ public class ESakshamRegisteredClient implements Serializable {
         return this.tokenSettings;
     }
 
+    public Set<String> getClientDomainNames() {
+        return this.clientDomainNames;
+    }
+
+    public Long getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public Long getUpdatedBy() {
+        return this.updatedBy;
+    }
+
+    public Instant getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setClientIdIssuedAt(Instant clientIdIssuedAt) {
+        this.clientIdIssuedAt = clientIdIssuedAt;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public void setClientSecretExpiresAt(Instant clientSecretExpiresAt) {
+        this.clientSecretExpiresAt = clientSecretExpiresAt;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public void setClientAuthenticationMethods(Set<ClientAuthenticationMethod> clientAuthenticationMethods) {
+        this.clientAuthenticationMethods = clientAuthenticationMethods;
+    }
+
+    public void setAuthorizationGrantTypes(Set<AuthorizationGrantType> authorizationGrantTypes) {
+        this.authorizationGrantTypes = authorizationGrantTypes;
+    }
+
+    public void setRedirectUris(Set<String> redirectUris) {
+        this.redirectUris = redirectUris;
+    }
+
+    public void setPostLogoutRedirectUris(Set<String> postLogoutRedirectUris) {
+        this.postLogoutRedirectUris = postLogoutRedirectUris;
+    }
+
+    public void setScopes(Set<String> scopes) {
+        this.scopes = scopes;
+    }
+
+    public void setClientSettings(ClientSettings clientSettings) {
+        this.clientSettings = clientSettings;
+    }
+
+    public void setTokenSettings(TokenSettings tokenSettings) {
+        this.tokenSettings = tokenSettings;
+    }
+
+    public void setClientDomainNames(Set<String> clientDomainNames) {
+        this.clientDomainNames = clientDomainNames;
+    }
+
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setUpdatedBy(Long updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -131,7 +232,12 @@ public class ESakshamRegisteredClient implements Serializable {
                 && Objects.equals(this.redirectUris, that.redirectUris)
                 && Objects.equals(this.postLogoutRedirectUris, that.postLogoutRedirectUris)
                 && Objects.equals(this.scopes, that.scopes) && Objects.equals(this.clientSettings, that.clientSettings)
-                && Objects.equals(this.tokenSettings, that.tokenSettings);
+                && Objects.equals(this.tokenSettings, that.tokenSettings)
+                && Objects.equals(this.clientDomainNames, that.clientDomainNames)
+                && Objects.equals(this.createdBy, that.createdBy)
+                && Objects.equals(this.updatedBy, that.updatedBy)
+                && Objects.equals(this.createdAt, that.createdAt)
+                && Objects.equals(this.updatedAt, that.updatedAt);
     }
 
     @Override
@@ -139,7 +245,9 @@ public class ESakshamRegisteredClient implements Serializable {
         return Objects.hash(this.id, this.clientId, this.clientIdIssuedAt, this.clientSecret,
                 this.clientSecretExpiresAt, this.clientName, this.clientAuthenticationMethods,
                 this.authorizationGrantTypes, this.redirectUris, this.postLogoutRedirectUris, this.scopes,
-                this.clientSettings, this.tokenSettings);
+                this.clientSettings, this.tokenSettings, this.clientDomainNames, this.createdBy,
+                this.updatedBy, this.createdAt, this.updatedAt
+        );
     }
 
     @Override
@@ -148,7 +256,10 @@ public class ESakshamRegisteredClient implements Serializable {
                 + this.clientName + '\'' + ", clientAuthenticationMethods=" + this.clientAuthenticationMethods
                 + ", authorizationGrantTypes=" + this.authorizationGrantTypes + ", redirectUris=" + this.redirectUris
                 + ", postLogoutRedirectUris=" + this.postLogoutRedirectUris + ", scopes=" + this.scopes
-                + ", clientSettings=" + this.clientSettings + ", tokenSettings=" + this.tokenSettings + '}';
+                + ", clientSettings=" + this.clientSettings + ", tokenSettings=" + this.tokenSettings + ", clientDomainNames=" + this.clientDomainNames
+                + ", createdBy=" + this.createdBy + ", updatedBy=" + this.updatedBy + ", createdAt=" + this.createdAt
+                + ", updatedAt=" + this.updatedAt
+                + '}';
     }
 
     public static ESakshamRegisteredClient.Builder withId(String id) {
@@ -192,6 +303,16 @@ public class ESakshamRegisteredClient implements Serializable {
 
         private TokenSettings tokenSettings;
 
+        private final Set<String> clientDomainNames = new HashSet<>();
+
+        private Long createdBy;
+
+        private Long updatedBy;
+
+        private Instant createdAt;
+
+        private Instant updatedAt;
+
         protected Builder(String id) {
             this.id = id;
         }
@@ -218,9 +339,16 @@ public class ESakshamRegisteredClient implements Serializable {
             if (!CollectionUtils.isEmpty(registeredClient.getScopes())) {
                 this.scopes.addAll(registeredClient.getScopes());
             }
+            if (!CollectionUtils.isEmpty(registeredClient.getClientDomainNames())) {
+                this.clientDomainNames.addAll(registeredClient.getClientDomainNames());
+            }
             this.clientSettings = ClientSettings.withSettings(registeredClient.getClientSettings().getSettings())
                     .build();
             this.tokenSettings = TokenSettings.withSettings(registeredClient.getTokenSettings().getSettings()).build();
+            this.createdBy = registeredClient.getCreatedBy();
+            this.updatedBy = registeredClient.getUpdatedBy();
+            this.createdAt = registeredClient.getCreatedAt();
+            this.updatedAt = registeredClient.getUpdatedAt();
         }
 
         public ESakshamRegisteredClient.Builder id(String id) {
@@ -294,6 +422,16 @@ public class ESakshamRegisteredClient implements Serializable {
             return this;
         }
 
+        public ESakshamRegisteredClient.Builder clientDomainName(String clientDomainName) {
+            this.clientDomainNames.add(clientDomainName);
+            return this;
+        }
+
+        public ESakshamRegisteredClient.Builder clientDomainNames(Consumer<Set<String>> clientDomainNamesConsumer) {
+            clientDomainNamesConsumer.accept(this.clientDomainNames);
+            return this;
+        }
+
         public ESakshamRegisteredClient.Builder scope(String scope) {
             this.scopes.add(scope);
             return this;
@@ -314,11 +452,32 @@ public class ESakshamRegisteredClient implements Serializable {
             return this;
         }
 
+        public ESakshamRegisteredClient.Builder createdBy(Long createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public ESakshamRegisteredClient.Builder updatedBy(Long updatedBy) {
+            this.updatedBy = updatedBy;
+            return this;
+        }
+
+        public ESakshamRegisteredClient.Builder createdAt(Instant createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public ESakshamRegisteredClient.Builder updatedAt(Instant updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
         public ESakshamRegisteredClient build() {
             Assert.hasText(this.clientId, "clientId cannot be empty");
             Assert.notEmpty(this.authorizationGrantTypes, "authorizationGrantTypes cannot be empty");
             if (this.authorizationGrantTypes.contains(AuthorizationGrantType.AUTHORIZATION_CODE)) {
                 Assert.notEmpty(this.redirectUris, "redirectUris cannot be empty");
+                Assert.notEmpty(this.clientDomainNames, "clientDomainNames cannot be empty");
             }
             if (!StringUtils.hasText(this.clientName)) {
                 this.clientName = this.id;
@@ -329,11 +488,9 @@ public class ESakshamRegisteredClient implements Serializable {
             if (this.clientSettings == null) {
                 ClientSettings.Builder builder = ClientSettings.builder();
                 if (isPublicClientType()) {
-                    // @formatter:off
                     builder
                             .requireProofKey(true)
                             .requireAuthorizationConsent(true);
-                    // @formatter:on
                 }
                 this.clientSettings = builder.build();
             }
@@ -342,6 +499,7 @@ public class ESakshamRegisteredClient implements Serializable {
             }
             validateScopes();
             validateRedirectUris();
+            validateClientDomainNames();
             validatePostLogoutRedirectUris();
             return create();
         }
@@ -361,16 +519,18 @@ public class ESakshamRegisteredClient implements Serializable {
             registeredClient.clientSecret = this.clientSecret;
             registeredClient.clientSecretExpiresAt = this.clientSecretExpiresAt;
             registeredClient.clientName = this.clientName;
-            registeredClient.clientAuthenticationMethods = Collections
-                    .unmodifiableSet(new HashSet<>(this.clientAuthenticationMethods));
-            registeredClient.authorizationGrantTypes = Collections
-                    .unmodifiableSet(new HashSet<>(this.authorizationGrantTypes));
-            registeredClient.redirectUris = Collections.unmodifiableSet(new HashSet<>(this.redirectUris));
-            registeredClient.postLogoutRedirectUris = Collections
-                    .unmodifiableSet(new HashSet<>(this.postLogoutRedirectUris));
-            registeredClient.scopes = Collections.unmodifiableSet(new HashSet<>(this.scopes));
+            registeredClient.clientAuthenticationMethods = Set.copyOf(this.clientAuthenticationMethods);
+            registeredClient.authorizationGrantTypes = Set.copyOf(this.authorizationGrantTypes);
+            registeredClient.redirectUris = Set.copyOf(this.redirectUris);
+            registeredClient.clientDomainNames = Set.copyOf(this.clientDomainNames);
+            registeredClient.postLogoutRedirectUris = Set.copyOf(this.postLogoutRedirectUris);
+            registeredClient.scopes = Set.copyOf(this.scopes);
             registeredClient.clientSettings = this.clientSettings;
             registeredClient.tokenSettings = this.tokenSettings;
+            registeredClient.createdBy = this.createdBy;
+            registeredClient.updatedBy = this.updatedBy;
+            registeredClient.createdAt = this.createdAt;
+            registeredClient.updatedAt = this.updatedAt;
 
             return registeredClient;
         }
@@ -406,6 +566,17 @@ public class ESakshamRegisteredClient implements Serializable {
             }
         }
 
+        private void validateClientDomainNames() {
+            if (CollectionUtils.isEmpty(this.clientDomainNames)) {
+                return;
+            }
+
+            for (String clientDomainName : this.clientDomainNames) {
+                Assert.isTrue(validateClientDomainName(clientDomainName),
+                        "client_domain_name \"" + clientDomainName + "\" is not a valid domain URI or contains fragment");
+            }
+        }
+
         private void validatePostLogoutRedirectUris() {
             if (CollectionUtils.isEmpty(this.postLogoutRedirectUris)) {
                 return;
@@ -421,6 +592,16 @@ public class ESakshamRegisteredClient implements Serializable {
             try {
                 URI validRedirectUri = new URI(redirectUri);
                 return validRedirectUri.getFragment() == null;
+            }
+            catch (URISyntaxException ex) {
+                return false;
+            }
+        }
+
+        private static boolean validateClientDomainName(String clientDomainName) {
+            try {
+                URI validClientDomainNameURI = new URI(clientDomainName);
+                return validClientDomainNameURI.getFragment() == null;
             }
             catch (URISyntaxException ex) {
                 return false;

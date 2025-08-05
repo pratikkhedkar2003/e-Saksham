@@ -10,7 +10,11 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 
 import java.util.stream.Collectors;
 
-public class ESakshamAuthUtils {
+public final class ESakshamAuthUtils {
+
+    private ESakshamAuthUtils() {
+        throw new AssertionError("No com.sarthi.e_Saksham.security.utils.ESakshamAuthUtils instances for you!");
+    }
 
     public static UserPrincipal getUserPrincipal(Authentication authentication) {
         if (authentication instanceof OAuth2AuthorizationCodeRequestAuthenticationToken) {
