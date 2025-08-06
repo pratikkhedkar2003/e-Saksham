@@ -51,7 +51,7 @@ public class ESakshamJwtGenerator implements OAuth2TokenGenerator<Jwt> {
     @Override
     public Jwt generate(OAuth2TokenContext context) {
         log.info("Inside ESakshamJwtGenerator generate() Method, Trying to generate JWT for given client: {} and User: {}",
-                context.getRegisteredClient().getClientId(), ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).getEsakshamId());
+                context.getRegisteredClient().getClientId(), ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).userMstEntity().getEsakshamId());
 
         if (context.getTokenType() == null ||
                 (!OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType()) &&
@@ -88,7 +88,7 @@ public class ESakshamJwtGenerator implements OAuth2TokenGenerator<Jwt> {
             claimsBuilder.issuer(issuer);
         }
         claimsBuilder
-                .subject(ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).getEsakshamId())
+                .subject(ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).userMstEntity().getEsakshamId())
                 .audience(Collections.singletonList(registeredClient.getClientId()))
                 .issuedAt(issuedAt)
                 .expiresAt(expiresAt)
@@ -170,7 +170,7 @@ public class ESakshamJwtGenerator implements OAuth2TokenGenerator<Jwt> {
         JwtClaimsSet claims = claimsBuilder.build();
 
         log.info("Inside ESakshamJwtGenerator generate() Method, Successfully generated JWT for given client: {} and User: {}",
-                context.getRegisteredClient().getClientId(), ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).getEsakshamId());
+                context.getRegisteredClient().getClientId(), ESakshamAuthUtils.getUserPrincipal(context.getPrincipal()).userMstEntity().getEsakshamId());
 
         return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
     }

@@ -10,7 +10,9 @@ public final class ESakshamAuthConstant {
 
     public static final String AUTH_DELIMITER = ",";
 
+    public static final String ROLE_PREFIX = "ROLE_";
+
     private ESakshamAuthConstant() {
-        super();
+        throw new AssertionError("No com.sarthi.e_Saksham.security.constant.ESakshamAuthConstant instances for you!");
     }
 }

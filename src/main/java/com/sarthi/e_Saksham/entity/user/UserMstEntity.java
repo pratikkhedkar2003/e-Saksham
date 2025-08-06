@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "esaksham_users_mst")
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class UserMstEntity extends Auditable implements Serializable {
 
     @Serial

@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "esaksham_states_mst")
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class StateMstEntity extends Auditable implements Serializable {
 
     @Serial

@@ -15,6 +15,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "esaksham_user_role_mappings")
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public class UserRoleMappingEntity extends Auditable implements Serializable {
 
     @Serial
