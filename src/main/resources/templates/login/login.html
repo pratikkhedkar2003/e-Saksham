@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownAttribute -->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Authorization Server</title>
+    <link th:href="@{/css/login-page.css}" rel="stylesheet">
+</head>
+<body>
+<div class="login-container">
+    <div class="login-card">
+        <div class="logo">
+            <img th:src="@{/images/logo.svg}" alt="Company Logo">
+        </div>
+
+        <form th:action="@{/login}" method="post" class="login-form" id="loginForm" novalidate>
+            <!-- Server-side errors -->
+            <div th:if="${param.error}" class="alert error">
+                <span th:if="${session.authenticationException != null}"
+                      th:text="${session.authenticationException}"></span>
+            </div>
+            <div th:if="${param.logout}" class="alert success">
+                You have been logged out
+            </div>
+
+            <!-- Username Input -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       placeholder="Enter your username"
+                       required
+                       aria-describedby="usernameError">
+                <div class="form-error" id="usernameError"></div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       required
+                       minlength="5"
+                       aria-describedby="passwordError">
+                <div class="form-error" id="passwordError"></div>
+            </div>
+
+            <button type="submit" class="btn-login">Sign In</button>
+
+            <div class="additional-options">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+                <div class="register-link">
+                    Don't have an account? <a href="#">Register</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        // Clear previous errors
+        clearErrors();
+
+        // Validate form elements
+        const usernameValid = validateUsername();
+        const passwordValid = validatePassword();
+
+        if (!usernameValid || !passwordValid) {
+            event.preventDefault();
+        }
+    });
+
+    function validateUsername() {
+        const usernameField = document.getElementById('username');
+        const errorElement = document.getElementById('usernameError');
+        const username = usernameField.value.trim();
+
+        if (username === '') {
+            showError(usernameField, errorElement, 'Username is required');
+            return false;
+        }
+
+        if (username.length < 2) {
+            showError(usernameField, errorElement, 'Username must be at least 2 characters');
+            return false;
+        }
+
+        if (username.length > 100) {
+            showError(usernameField, errorElement, 'Username must be less than 100 characters');
+            return false;
+        }
+
+        return true;
+    }
+
+    function validatePassword() {
+        const passwordField = document.getElementById('password');
+        const errorElement = document.getElementById('passwordError');
+        const password = passwordField.value.trim();
+
+        if (password === '') {
+            showError(passwordField, errorElement, 'Password is required');
+            return false;
+        }
+
+        if (password.length < 5) {
+            showError(passwordField, errorElement, 'Password must be at least 5 characters');
+            return false;
+        }
+
+        return true;
+    }
+
+    function showError(field, errorElement, message) {
+        field.classList.add('invalid');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+    }
+
+    function clearErrors() {
+        const errorElements = document.querySelectorAll('.form-error');
+        const fields = document.querySelectorAll('input');
+
+        errorElements.forEach(element => {
+            element.textContent = '';
+            element.style.display = 'none';
+        });
+
+        fields.forEach(field => field.classList.remove('invalid'));
+    }
+</script>
+
+</body>
+</html>

@@ -1,8 +1,8 @@
 package com.sarthi.e_Saksham.entity;
 
 import com.sarthi.e_Saksham.domain.LoggedInUser;
-import com.sarthi.e_Saksham.domain.RequestContext;
 import com.sarthi.e_Saksham.exception.ESakshamApiException;
+import com.sarthi.e_Saksham.utils.DataUtility;
 import com.sarthi.e_Saksham.utils.ESakshamAuthorizationServerVersion;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -17,11 +17,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 
-@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@SuppressWarnings({"LombokGetterMayBeUsed", "LombokSetterMayBeUsed"})
 public abstract class Auditable implements Serializable {
 
     @Serial
@@ -46,20 +47,23 @@ public abstract class Auditable implements Serializable {
 
     @PrePersist
     public void beforePersist() {
-        LoggedInUser loggedInUser = RequestContext.getLoggedInUser();
+        LoggedInUser loggedInUser = DataUtility.getLoggedInUser();
         if(Objects.isNull(loggedInUser)) {
             throw new ESakshamApiException("Cannot persist entity without user ID in RequestContext for this thread");
         }
+        setCreatedAt(Timestamp.from(Instant.now()));
+        setUpdatedAt(Timestamp.from(Instant.now()));
         setCreatedBy(loggedInUser.userId());
         setUpdatedBy(loggedInUser.userId());
     }
 
     @PreUpdate
     public void beforeUpdate() {
-        LoggedInUser loggedInUser = RequestContext.getLoggedInUser();
+        LoggedInUser loggedInUser = DataUtility.getLoggedInUser();
         if(Objects.isNull(loggedInUser)) {
             throw new ESakshamApiException("Cannot update entity without user ID in RequestContext for this thread");
         }
+        setUpdatedAt(Timestamp.from(Instant.now()));
         setUpdatedBy(loggedInUser.userId());
     }
 

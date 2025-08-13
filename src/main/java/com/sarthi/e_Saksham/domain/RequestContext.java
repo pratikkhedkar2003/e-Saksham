@@ -12,8 +12,17 @@ public final class RequestContext {
         throw new AssertionError("No com.sarthi.e_Saksham.domain.RequestContext instances for you!");
     }
 
+    /**
+     * @deprecated Use {@link #clear()} instead. This method will be removed in a future version.
+     */
+    @Deprecated(since = "1.0.1", forRemoval = true)
     public static void start() {
-        log.info("Inside start Method, trying to clear RequestContext");
+        log.info("Deprecated method start() called. Use clear() instead.");
+        clear();
+    }
+
+    public static void clear() {
+        log.info("Clearing LoggedInUser from RequestContext");
         LOGGED_IN_USER.remove();
     }
 

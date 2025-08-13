@@ -1,9 +1,13 @@
 package com.sarthi.e_Saksham.security.config;
 
 import com.sarthi.e_Saksham.security.constant.ESakshamAuthConstant;
+import com.sarthi.e_Saksham.security.filter.LoggedInUserFilter;
 import com.sarthi.e_Saksham.security.generator.ESakshamJwtGenerator;
+import com.sarthi.e_Saksham.security.handler.LoginFailureHandler;
+import com.sarthi.e_Saksham.security.handler.MfaAuthenticationSuccessHandler;
 import com.sarthi.e_Saksham.security.utils.ESakshamAuthUtils;
 import com.sarthi.e_Saksham.service.client.ESakshamRegisteredClientService;
+import com.sarthi.e_Saksham.service.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -25,6 +29,8 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -49,11 +55,15 @@ import static org.springframework.http.HttpMethod.PUT;
 @Configuration
 @EnableWebSecurity
 public class AuthorizationServerConfig {
+    private final UserService userService;
     private final JwtConfiguration jwtConfiguration;
+    private final LoggedInUserFilter loggedInUserFilter;
     private final ESakshamRegisteredClientService eSakshamRegisteredClientService;
 
-    public AuthorizationServerConfig(JwtConfiguration jwtConfiguration, ESakshamRegisteredClientService eSakshamRegisteredClientService) {
+    public AuthorizationServerConfig(UserService userService, JwtConfiguration jwtConfiguration, LoggedInUserFilter loggedInUserFilter, ESakshamRegisteredClientService eSakshamRegisteredClientService) {
+        this.userService = userService;
         this.jwtConfiguration = jwtConfiguration;
+        this.loggedInUserFilter = loggedInUserFilter;
         this.eSakshamRegisteredClientService = eSakshamRegisteredClientService;
     }
 
@@ -73,12 +83,45 @@ public class AuthorizationServerConfig {
                 .authorizeHttpRequests((authorizeHttpRequest) -> authorizeHttpRequest
                         .anyRequest().authenticated()
                 )
+                .addFilterAfter(loggedInUserFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((httpSecurityExceptionHandlingConfigurer) -> httpSecurityExceptionHandlingConfigurer
                         .accessDeniedPage("/access-denied")
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
+                )
+        ;
+
+        return httpSecurity.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
+        httpSecurity.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
+
+        httpSecurity
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/logout", "/css/**", "/images/**").permitAll()
+                        .requestMatchers(POST, "/logout").permitAll()
+                        .requestMatchers("/mfa").hasAuthority(ESakshamAuthConstant.MFA_AUTHORITY)
+                        .anyRequest().authenticated()
+                )
+                .addFilterAfter(loggedInUserFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
+                        .loginPage("/login")
+                        .successHandler(new MfaAuthenticationSuccessHandler("/mfa", ESakshamAuthConstant.MFA_AUTHORITY, userService))
+                        .failureHandler(new LoginFailureHandler("/login?error"))
+                )
+                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl(ESakshamAuthConstant.APPLICATION_BASE_URL)
+                        .addLogoutHandler(new CookieClearingLogoutHandler(ESakshamAuthConstant.JSESSIONID))
+                        .invalidateHttpSession(true)
+                        .deleteCookies(ESakshamAuthConstant.JSESSIONID)
+                        .clearAuthentication(true)
                 )
         ;
 
@@ -97,7 +140,7 @@ public class AuthorizationServerConfig {
         return context -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 context.getClaims().claims(claims -> {
-                        claims.putIfAbsent(ESakshamAuthConstant.AUTHORITIES, ESakshamAuthUtils.getUserAuthorities(context));
+                        claims.putIfAbsent(ESakshamAuthConstant.AUTHORITIES_KEY, ESakshamAuthUtils.getUserAuthorities(context));
                         // claims.putIfAbsent(ESakshamAuthConstant.CLIENT_ID, context.getRegisteredClient().getClientId());
                     }
                 );

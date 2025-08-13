@@ -9,4 +9,5 @@ public interface UserService {
 
     UserMstEntity updateLoginAttempt(String userName, UserLoginType userLogin);
 
+    void resetLoginAttempts(String userName);
 }

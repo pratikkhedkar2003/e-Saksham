@@ -33,14 +33,18 @@ public class UserRoleMappingEntity extends Auditable implements Serializable {
     @Column(name = "role_id", nullable = false)
     private Long roleId;
 
+    @Column(name = "client_id", nullable = false)
+    private String clientId;
+
     public UserRoleMappingEntity() {
         super();
     }
 
-    public UserRoleMappingEntity(Long userRoleMappingId, Long userId, Long roleId) {
+    public UserRoleMappingEntity(Long userRoleMappingId, Long userId, Long roleId, String clientId) {
         this.userRoleMappingId = userRoleMappingId;
         this.userId = userId;
         this.roleId = roleId;
+        this.clientId = clientId;
     }
 
     public Long getUserRoleMappingId() {
@@ -67,12 +71,21 @@ public class UserRoleMappingEntity extends Auditable implements Serializable {
         this.roleId = roleId;
     }
 
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     @Override
     public String toString() {
         return "UserRoleMappingEntity{" +
                 "userRoleMappingId=" + userRoleMappingId +
                 ", userId=" + userId +
                 ", roleId=" + roleId +
+                ", clientId=" + clientId +
                 '}';
     }
 }
